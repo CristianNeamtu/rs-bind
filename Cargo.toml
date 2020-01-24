@@ -1,0 +1,13 @@
+[package]
+name = "rs-bind"
+version = "0.1.0"
+authors = ["Cristian Neamtu"]
+
+[dependencies]
+json = "0.12.1"
+csv = "1.1.2"
+serde = "1.0.104"
+
+[dependencies.rusqlite]
+version = "0.21.0"
+features = ["bundled"]
