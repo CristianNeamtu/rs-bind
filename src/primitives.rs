@@ -209,17 +209,9 @@ implement_from_casts!(F64Visitor, f64 as base_type, {
     visit_f32: f32 => from_f32,
     visit_f64: f64 => from_f64
 });
-implement_from_casts!(BoolVisitor, bool as base_type, {
-    visit_i8: i8 => from_i8,
-    visit_i16: i16 => from_i16,
-    visit_i32: i32 => from_i32,
-    visit_i64: i64 => from_i64,
-    visit_u8: u8 => from_u8,
-    visit_u16: u16 => from_u16,
-    visit_u32: u32 => from_u32,
-    visit_u64: u64 => from_u64
+implement_one_to_one!(BoolVisitor, bool as base_type, {
+    visit_bool: bool
 });
-
 implement_one_to_one!(ISizeVisitor, isize as base_type, {
     visit_isize: isize
 });

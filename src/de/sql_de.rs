@@ -13,14 +13,26 @@ impl<'de> Deserializer for &Row<'de> {
         match self.column_count() {
             0 => visitor.visit_none(),
             1 => {
-                let v = self.get::<usize, Value>(0).unwrap();
-                v.deserialize(visitor)
+                match self.get::<usize, Value>(0) {
+                    Ok(value) => value.deserialize(visitor),
+                    _ => unimplemented!()
+                }
             }
             n => {
                 for i in 0..n {
-                    let string = self.column_name(i).unwrap().to_owned();
-                    let raw_value: Value = self.get(i).unwrap();
-                    map.insert(string, raw_value);
+                    let string_result = self.column_name(i)
+                        .map(String::from);
+                    let value_result = self.get(i);
+
+                    match (string_result, value_result) {
+                        (Ok(string), Ok(value)) => {
+                            map.insert(string, value);
+                        }
+                        (Err(_), _) |
+                        (_, Err(_)) => {
+                            unimplemented!()
+                        }
+                    }
                 }
                 visitor.visit_map(MapIter::new(map))
             }
