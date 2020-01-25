@@ -75,7 +75,7 @@ impl MapAccess for MapIter {
             Some(value) => {
                 V::deserialize(value).map(Option::Some)
             }
-            None => Err(BindError::new("Called on nothing".to_string()))
+            None => Err(BindError::from_string("Called on nothing".to_string()))
         };
         result
     }

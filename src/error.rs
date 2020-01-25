@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct BindError {
     message: String
@@ -6,7 +5,12 @@ pub struct BindError {
 
 #[allow(dead_code)]
 impl BindError {
-    pub(crate) fn new(message: String) -> Self {
+
+    pub fn from_raw_str(message: &str) -> Self {
+        BindError { message: String::from(message) }
+    }
+
+    pub fn from_string(message: String) -> Self {
         BindError { message }
     }
 

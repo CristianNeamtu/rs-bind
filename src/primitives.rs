@@ -41,7 +41,7 @@ macro_rules! implement_methods {
     ($ty:ty, {$( $method:ident:$type:ty => $castor:ident ),*}) => {
         $(
         fn $method(self, v: $type) -> Result<Self::Value, Self::Error> {
-            <$ty>::$castor(v).ok_or(BindError::new(
+            <$ty>::$castor(v).ok_or(BindError::from_string(
                 format!("Could not convert {} from {}", stringify!($ty), stringify!($type))
             ))
         }
@@ -59,7 +59,7 @@ macro_rules! implement_from_casts {
 
             $(
             fn $method(self, v: $type) -> Result<Self::Value, Self::Error> {
-                <$ty>::$castor(v).ok_or(BindError::new(
+                <$ty>::$castor(v).ok_or(BindError::from_string(
                     format!("Could not convert {} from {}", stringify!($ty), stringify!($type))
                 ))
             }
@@ -67,7 +67,7 @@ macro_rules! implement_from_casts {
 
              fn visit_string(self, v: String) -> Result<Self::Value, Self::Error> {
                 v.parse::<$ty>()
-                    .map_err(|_e| BindError::new(format!("Could not parse string to {}", stringify!($ty))))
+                    .map_err(|_e| BindError::from_string(format!("Could not parse string to {}", stringify!($ty))))
             }
         }
 
@@ -96,7 +96,7 @@ macro_rules! implement_one_to_one {
 
             fn visit_string(self, v: String) -> Result<Self::Value, Self::Error> {
                 v.parse::<$ty>()
-                    .map_err(|_e| BindError::new(format!("Could not parse string to {}", stringify!($ty))))
+                    .map_err(|_e| BindError::from_string(format!("Could not parse string to {}", stringify!($ty))))
             }
 
             implement_methods!($ty, {

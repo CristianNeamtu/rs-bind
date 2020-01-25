@@ -1,7 +1,7 @@
 use rusqlite::{Connection, NO_PARAMS, Statement};
 
-use de::person::Player;
 use traits::Deserializable;
+use models::person::Player;
 
 struct TestDriver {
     conn: Connection

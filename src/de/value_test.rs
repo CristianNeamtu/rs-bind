@@ -1,8 +1,8 @@
 use container::map_iter::Map;
-use de::person::Player;
 use error::BindError;
 use traits::Deserializable;
 use types::{Numeric, Value};
+use models::person::Player;
 
 #[test]
 fn should_read_person_with_matching_types() {
