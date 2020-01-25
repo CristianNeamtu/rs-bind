@@ -8,6 +8,7 @@ impl Deserializer for String {
     }
 }
 
+#[derive(Debug)]
 pub enum Value {
     Null,
     Bool(bool),
@@ -38,7 +39,7 @@ impl Deserializer for Value {
     }
 }
 
-
+#[derive(Debug)]
 pub enum Numeric {
     I8(i8),
     I16(i16),

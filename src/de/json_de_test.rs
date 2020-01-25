@@ -1,12 +1,13 @@
 use models::menu::{Menu, MenuItem};
 use traits::Deserializable;
+use models::simple::Simple;
 
 const JSON_BODY: &str = r#"
     {
         "restaurant": "Fast-Fast-Food",
         "items": [{
                 "name": "Burger",
-                "price": 22,
+                "price": 22.0,
                 "vegetarian": false,
                 "ingredients": [
                     "meat", "garlic", "onion", "hamburger buns", "mayonnaise", "ketchup"
@@ -14,7 +15,7 @@ const JSON_BODY: &str = r#"
             },
             {
                 "name": "Pineapple Pizza",
-                "price": 32,
+                "price": 32.0,
                 "vegetarian": false
             }
         ]
@@ -47,4 +48,18 @@ fn assert_menu_item(option: Option<&MenuItem>, name: &str, price: f32, vegetaria
         Some(sb) => sb.len()
     };
     assert_eq!(expected_number_of_ingredients, ingredient_count);
+}
+
+#[test]
+fn should_deserialize_simple() {
+    const JSON_BODY: &str = r#"
+    {
+        "a": 22,
+        "b": "test",
+        "c": 12.1
+    }
+    "#;
+
+    let json = json::parse(JSON_BODY).unwrap();
+    let simple = Simple::deserialize(json).unwrap();
 }

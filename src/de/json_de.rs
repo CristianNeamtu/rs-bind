@@ -5,7 +5,6 @@ use container::map_iter::Map;
 use traits::{Deserializer, Visitor};
 use types::{Numeric, Value};
 
-
 impl Deserializer for &JsonValue {
     fn deserialize<V: Visitor>(self, visitor: V) -> Result<V::Value, V::Error> {
         Value::from(self).deserialize(visitor)
@@ -43,10 +42,10 @@ impl From<JsonValue> for Value {
 impl From<Number> for Numeric {
     fn from(number: Number) -> Self {
         let (positive, _, exponent) = number.as_parts();
-        match (positive, exponent > 0) {
+        match (positive, exponent >= 0) {
             (true, true) => Numeric::U64(u64::from(number)),
             (false, true) => Numeric::I64(i64::from(number)),
-            (true, false) | (false, false) => Numeric::F64(f64::from(number))
+            (_, false) => Numeric::F64(f64::from(number))
         }
     }
 }
@@ -76,10 +75,10 @@ impl From<&JsonValue> for Value {
 impl From<&Number> for Numeric {
     fn from(number: &Number) -> Self {
         let (positive, _, exponent) = number.as_parts();
-        match (positive, exponent > 0) {
+        match (positive, exponent >= 0) {
             (true, true) => Numeric::U64(u64::from(*number)),
             (false, true) => Numeric::I64(i64::from(*number)),
-            (true, false) | (false, false) => Numeric::F64(f64::from(*number))
+            (_, false) => Numeric::F64(f64::from(*number))
         }
     }
 }

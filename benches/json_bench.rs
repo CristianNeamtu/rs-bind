@@ -3,8 +3,7 @@ extern crate criterion;
 extern crate json;
 extern crate rs_bind;
 
-use criterion::{Bencher, Criterion, Fun};
-use json::JsonValue;
+use criterion::Criterion;
 
 use rs_bind::models::menu::Menu;
 use rs_bind::traits::Deserializable;
@@ -14,7 +13,7 @@ const JSON_BODY: &str = r#"
         "restaurant": "Fast-Fast-Food",
         "items": [{
                 "name": "Burger",
-                "price": 22,
+                "price": 22.0,
                 "vegetarian": false,
                 "ingredients": [
                     "meat", "garlic", "onion", "hamburger buns", "mayonnaise", "ketchup"
@@ -22,24 +21,23 @@ const JSON_BODY: &str = r#"
             },
             {
                 "name": "Pineapple Pizza",
-                "price": 32,
+                "price": 32.0,
                 "vegetarian": false
             }
         ]
     }
     "#;
 
-fn bench_seq_fib(b: &mut Bencher, json: &JsonValue) {
-    b.iter(|| {
-        Menu::deserialize(json).unwrap()
-    });
-}
-
 fn criterion_benchmark(criterion: &mut Criterion) {
-    let json = json::parse(JSON_BODY).unwrap();
-    let function = Fun::new("Deserialization", bench_seq_fib);
     criterion
-        .bench_functions("Json", vec![function], json);
+        .bench_function("json deserialization -- menu", |b| b.iter(|| {
+            let json = json::parse(JSON_BODY).unwrap();
+            Menu::deserialize(json).unwrap()
+        }));
+    criterion
+        .bench_function("json parse", |b| b.iter(|| {
+            json::parse(JSON_BODY).unwrap();
+        }));
 }
 
 criterion_group!(benches, criterion_benchmark);

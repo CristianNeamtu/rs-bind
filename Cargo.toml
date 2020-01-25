@@ -23,3 +23,7 @@ plotters = "0.2.12"
 [[bench]]
 name = "json_bench"
 harness = false
+
+[[bench]]
+name = "json_simple"
+harness = false

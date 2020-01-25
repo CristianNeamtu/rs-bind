@@ -209,6 +209,7 @@ implement_from_casts!(F64Visitor, f64 as base_type, {
     visit_f32: f32 => from_f32,
     visit_f64: f64 => from_f64
 });
+
 implement_one_to_one!(BoolVisitor, bool as base_type, {
     visit_bool: bool
 });
