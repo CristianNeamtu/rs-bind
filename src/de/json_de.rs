@@ -28,9 +28,9 @@ impl Deserializer for &JsonValue {
         match self {
             JsonValue::Null => visitor.visit_none(),
             JsonValue::Boolean(a_bool) => visitor.visit_bool(*a_bool),
-            JsonValue::Short(short) => visitor.visit_str(short.as_str()),
+            JsonValue::Short(short) => visitor.visit_str(short.as_ref()),
             JsonValue::Number(num) => visit_number(*num, visitor),
-            JsonValue::String(string) => visitor.visit_string(string.to_owned()),
+            JsonValue::String(string) => visitor.visit_str(string.as_str()),
             JsonValue::Array(arr) => visitor.visit_seq(arr.into_iter()),
             JsonValue::Object(obj) => visitor.visit_map(obj),
         }

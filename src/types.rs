@@ -39,7 +39,7 @@ impl Deserializer for &Value {
             Value::Bool(abool) => visitor.visit_bool(*abool),
             Value::Number(number) => number.deserialize(visitor),
             Value::Char(character) => visitor.visit_char(*character),
-            Value::String(string) => visitor.visit_string(string.to_owned()),
+            Value::String(string) => visitor.visit_str(string),
             Value::Array(arr) => {
                 visitor.visit_seq(arr.into_iter())
             }

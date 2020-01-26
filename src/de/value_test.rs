@@ -10,6 +10,7 @@ fn should_read_person_with_matching_types() {
 
     field_map.insert(String::from("id"), Value::Number(Numeric::U8(1)));
     field_map.insert(String::from("name"), Value::String(String::from("Randy")));
+    field_map.insert(String::from("nickname"), Value::String(String::from("Brown")));
     field_map.insert(String::from("age"), Value::Number(Numeric::U64(30)));
     field_map.insert(String::from("credits"), Value::Number(Numeric::F64(-20f64)));
     field_map.insert(String::from("has_companion"), Value::Bool(true));
@@ -17,9 +18,7 @@ fn should_read_person_with_matching_types() {
     let value = Value::Object(field_map);
     let option = Player::unmarshal(value);
 
-    assert_eq!(option.is_ok(), true);
-
-    let person: Player = option.ok().unwrap();
+    let person: Player = option.unwrap();
 
     assert_eq!(person.has_companion, true);
     assert_eq!(person.age, 30);
@@ -32,7 +31,7 @@ fn should_read_person_from_string() {
 
     field_map.insert(String::from("id"), Value::String(String::from("1")));
     field_map.insert(String::from("name"), Value::String(String::from("Randy")));
-    field_map.insert(String::from("nickname"), Value::String(String::from("Randerson")));
+    field_map.insert(String::from("nickname"), Value::String(String::from("Brown")));
     field_map.insert(String::from("age"), Value::String(String::from("30")));
     field_map.insert(String::from("credits"), Value::String(String::from("-16")));
     field_map.insert(String::from("has_companion"), Value::String(String::from("true")));
@@ -40,8 +39,6 @@ fn should_read_person_from_string() {
 
     let value = Value::Object(field_map);
     let option = Player::unmarshal(value);
-
-    assert_eq!(option.is_ok(), true);
 
     let person: Player = option.ok().unwrap();
 
@@ -66,5 +63,5 @@ fn should_panic_when_reading_person() {
 
     let error: BindError = option.err().unwrap();
 
-    assert_eq!(error.get_message(), "Could not parse string to u8");
+    assert_eq!(error.get_message(), "Could not find \"id\"");
 }

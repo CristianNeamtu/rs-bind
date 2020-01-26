@@ -2,6 +2,8 @@
 extern crate criterion;
 extern crate json;
 extern crate rs_bind;
+extern crate serde;
+extern crate serde_json;
 
 use criterion::Criterion;
 
@@ -18,13 +20,26 @@ const JSON_BODY: &str = r#"
 
 fn criterion_benchmark(criterion: &mut Criterion) {
     criterion
-        .bench_function("json deserialization -- simple", |b| b.iter(|| {
+        .bench_function("[Simple] json parsing using `json`", |b| b.iter(|| {
+            json::parse(JSON_BODY).unwrap();
+        }));
+    criterion
+        .bench_function("[Simple] baseline", |b| b.iter(|| {
+            let json = json::parse(JSON_BODY).unwrap();
+            Simple {
+                a: json["a"].as_i32().unwrap(),
+                b: json["b"].as_str().unwrap().to_owned(),
+                c: json["c"].as_f64().unwrap()
+            };
+        }));
+    criterion
+        .bench_function("[Simple] json parsing + deserialization", |b| b.iter(|| {
             let json = json::parse(JSON_BODY).unwrap();
             Simple::unmarshal(json).unwrap()
         }));
     criterion
-        .bench_function("json parse", |b| b.iter(|| {
-            json::parse(JSON_BODY).unwrap();
+        .bench_function("[Menu] Serde parsing + deserialization", |b| b.iter(|| {
+            serde_json::from_str::<Simple>(JSON_BODY).unwrap()
         }));
 }
 

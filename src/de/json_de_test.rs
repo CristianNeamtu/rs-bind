@@ -16,7 +16,9 @@ const JSON_BODY: &str = r#"
             {
                 "name": "Pineapple Pizza",
                 "price": 32.0,
-                "vegetarian": false
+                "vegetarian": false,
+                "ingredients": [
+                ]
             }
         ]
     }
@@ -43,11 +45,7 @@ fn assert_menu_item(option: Option<&MenuItem>, name: &str, price: f32, vegetaria
     assert_eq!(item.name, String::from(name));
     assert_eq!(item.price, price);
     assert_eq!(item.vegetarian, vegetarian);
-    let expected_number_of_ingredients = match &item.ingredients {
-        None => 0,
-        Some(sb) => sb.len()
-    };
-    assert_eq!(expected_number_of_ingredients, ingredient_count);
+    assert_eq!(item.ingredients.len(), ingredient_count);
 }
 
 #[test]

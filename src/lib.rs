@@ -1,3 +1,4 @@
+extern crate bind_gen;
 extern crate csv;
 extern crate json;
 extern crate rusqlite;

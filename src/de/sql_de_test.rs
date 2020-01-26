@@ -52,7 +52,7 @@ impl TestDriver {
 fn should_map_person_from_sql() {
     let test = TestDriver::new();
     test.set_up();
-    let player = Player::new(0, String::from("Paul"), Some(String::from("Paul")), 22,
+    let player = Player::new(0, String::from("Paul"), String::from("Paul"), 22,
                              -22f32, false, 100);
 
     test.insert(&player);
@@ -79,7 +79,7 @@ fn should_map_name_from_sql() {
     let test = TestDriver::new();
     test.set_up();
 
-    let player = Player::new(0, String::from("Paul"), Some(String::from("Paul")), 22,
+    let player = Player::new(0, String::from("Paul"), String::from("Paul"), 22,
                              -22f32, false, 100);
 
     test.insert(&player);

@@ -69,6 +69,11 @@ macro_rules! implement_from_casts {
                 v.parse::<$ty>()
                     .map_err(|_e| BindError::from_string(format!("Could not parse string to {}", stringify!($ty))))
             }
+
+            fn visit_str(self, v: &str) -> Result<Self::Value, Self::Error> {
+                v.parse::<$ty>()
+                    .map_err(|_e| BindError::from_string(format!("Could not parse str to {}", stringify!($ty))))
+            }
         }
 
         impl Deserializable for $ty {
@@ -95,6 +100,11 @@ macro_rules! implement_one_to_one {
             )*
 
             fn visit_string(self, v: String) -> Result<Self::Value, Self::Error> {
+                v.parse::<$ty>()
+                    .map_err(|_e| BindError::from_string(format!("Could not parse string to {}", stringify!($ty))))
+            }
+
+            fn visit_str(self, v: &str) -> Result<Self::Value, Self::Error> {
                 v.parse::<$ty>()
                     .map_err(|_e| BindError::from_string(format!("Could not parse string to {}", stringify!($ty))))
             }

@@ -2,6 +2,8 @@
 extern crate criterion;
 extern crate json;
 extern crate rs_bind;
+extern crate serde;
+extern crate serde_json;
 
 use criterion::Criterion;
 
@@ -22,7 +24,9 @@ const JSON_BODY: &str = r#"
             {
                 "name": "Pineapple Pizza",
                 "price": 32.0,
-                "vegetarian": false
+                "vegetarian": false,
+                "ingredients": [
+                ]
             }
         ]
     }
@@ -30,13 +34,17 @@ const JSON_BODY: &str = r#"
 
 fn criterion_benchmark(criterion: &mut Criterion) {
     criterion
-        .bench_function("json deserialization -- menu", |b| b.iter(|| {
+        .bench_function("[Menu] json parsing using `json`", |b| b.iter(|| {
+            json::parse(JSON_BODY).unwrap();
+        }));
+    criterion
+        .bench_function("[Menu] json parsing + deserialization", |b| b.iter(|| {
             let json = json::parse(JSON_BODY).unwrap();
             Menu::unmarshal(json).unwrap()
         }));
     criterion
-        .bench_function("json parse", |b| b.iter(|| {
-            json::parse(JSON_BODY).unwrap();
+        .bench_function("[Menu] Serde parsing + deserialization", |b| b.iter(|| {
+            serde_json::from_str::<Menu>(JSON_BODY).unwrap()
         }));
 }
 
