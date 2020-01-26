@@ -62,7 +62,7 @@ impl Visitor for FieldVisitor {
 }
 
 impl Deserializable for PlayerFields {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(FieldVisitor)
     }
 }
@@ -87,7 +87,7 @@ impl Visitor for PlayerVisitor {
 }
 
 impl Deserializable for Player {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(PlayerVisitor)
     }
 }

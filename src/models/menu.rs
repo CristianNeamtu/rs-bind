@@ -33,7 +33,7 @@ impl Visitor for MenuVisitor {
 }
 
 impl Deserializable for Menu {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(MenuVisitor)
     }
 }
@@ -59,7 +59,7 @@ impl Visitor for MenuItemVisitor {
 }
 
 impl Deserializable for MenuItem {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(MenuItemVisitor)
     }
 }

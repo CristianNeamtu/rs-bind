@@ -54,7 +54,7 @@ impl MapAccess for Object {
     fn get_value<V: Deserializable>(&mut self, key: &str) -> Result<Option<V>, BindError> {
         let value: Option<&JsonValue> = self.get(key);
         match value {
-            Some(json) => V::deserialize(json)
+            Some(json) => V::unmarshal(json)
                 .map(Option::Some),
             None => Ok(None)
         }
@@ -70,7 +70,7 @@ impl MapAccess for &Object {
     fn get_value<V: Deserializable>(&mut self, key: &str) -> Result<Option<V>, BindError> {
         let value: Option<&JsonValue> = self.get(key);
         match value {
-            Some(json) => V::deserialize(json)
+            Some(json) => V::unmarshal(json)
                 .map(Option::Some),
             None => Ok(None)
         }
@@ -80,7 +80,7 @@ impl MapAccess for &Object {
 impl SeqAccess for Iter<'_, JsonValue> {
     fn next_element<T: Deserializable>(&mut self) -> Result<Option<T>, BindError> {
         match self.next() {
-            Some(json) => T::deserialize(json)
+            Some(json) => T::unmarshal(json)
                 .map(Option::Some),
             None => Ok(None)
         }
@@ -90,7 +90,7 @@ impl SeqAccess for Iter<'_, JsonValue> {
 impl SeqAccess for IntoIter<JsonValue> {
     fn next_element<T: Deserializable>(&mut self) -> Result<Option<T>, BindError> {
         match self.next() {
-            Some(json) => T::deserialize(json)
+            Some(json) => T::unmarshal(json)
                 .map(Option::Some),
             None => Ok(None)
         }

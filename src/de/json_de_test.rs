@@ -25,7 +25,7 @@ const JSON_BODY: &str = r#"
 #[test]
 fn should_read_object() {
     let json = json::parse(JSON_BODY).unwrap();
-    let menu = Menu::deserialize(json).unwrap();
+    let menu = Menu::unmarshal(json).unwrap();
 
     assert_eq!(menu.restaurant, "Fast-Fast-Food");
     assert_eq!(menu.items.len(), 2);
@@ -61,5 +61,5 @@ fn should_deserialize_simple() {
     "#;
 
     let json = json::parse(JSON_BODY).unwrap();
-    Simple::deserialize(json).unwrap();
+    Simple::unmarshal(json).unwrap();
 }

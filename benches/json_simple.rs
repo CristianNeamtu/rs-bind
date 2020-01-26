@@ -20,7 +20,7 @@ fn criterion_benchmark(criterion: &mut Criterion) {
     criterion
         .bench_function("json deserialization -- simple", |b| b.iter(|| {
             let json = json::parse(JSON_BODY).unwrap();
-            Simple::deserialize(json).unwrap()
+            Simple::unmarshal(json).unwrap()
         }));
     criterion
         .bench_function("json parse", |b| b.iter(|| {

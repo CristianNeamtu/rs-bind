@@ -60,7 +60,7 @@ fn should_map_person_from_sql() {
     let mut statement = test.query("SELECT * FROM person");
 
     let iter = statement.query_map(NO_PARAMS, |row| {
-        Ok(Player::deserialize(row).unwrap())
+        Ok(Player::unmarshal(row).unwrap())
     });
 
     let option = iter.unwrap().next().unwrap();
@@ -87,7 +87,7 @@ fn should_map_name_from_sql() {
     let mut statement = test.query("SELECT name FROM person");
 
     let iter = statement.query_map(NO_PARAMS, |row| {
-        Ok(String::deserialize(row).unwrap())
+        Ok(String::unmarshal(row).unwrap())
     });
 
     let option = iter.unwrap().next().unwrap();

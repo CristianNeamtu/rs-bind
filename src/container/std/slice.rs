@@ -30,7 +30,7 @@ impl<V: Deserializable> Visitor for SliceVisitor<V> {
 }
 
 impl<V: Deserializable> Deserializable for Box<[V]> {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(SliceVisitor::<V>::new())
     }
 }

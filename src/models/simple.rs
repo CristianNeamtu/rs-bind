@@ -28,7 +28,7 @@ impl Visitor for SimpleVisitor {
 }
 
 impl Deserializable for Simple {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(SimpleVisitor)
     }
 }

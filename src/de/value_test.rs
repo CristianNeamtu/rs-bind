@@ -15,7 +15,7 @@ fn should_read_person_with_matching_types() {
     field_map.insert(String::from("has_companion"), Value::Bool(true));
     field_map.insert(String::from("game_score"), Value::Number(Numeric::I8(100)));
     let value = Value::Object(field_map);
-    let option = Player::deserialize(value);
+    let option = Player::unmarshal(value);
 
     assert_eq!(option.is_ok(), true);
 
@@ -39,7 +39,7 @@ fn should_read_person_from_string() {
     field_map.insert(String::from("game_score"), Value::String(String::from("100")));
 
     let value = Value::Object(field_map);
-    let option = Player::deserialize(value);
+    let option = Player::unmarshal(value);
 
     assert_eq!(option.is_ok(), true);
 
@@ -60,7 +60,7 @@ fn should_panic_when_reading_person() {
     field_map.insert("has_companion".to_owned(), Value::String("true".to_owned()));
 
     let value = Value::Object(field_map);
-    let option = Player::deserialize(value);
+    let option = Player::unmarshal(value);
 
     assert_eq!(option.is_err(), true);
 

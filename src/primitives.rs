@@ -29,7 +29,7 @@ impl Visitor for CharVisitor {
 }
 
 impl Deserializable for String {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(StringVisitor)
     }
 }
@@ -72,7 +72,7 @@ macro_rules! implement_from_casts {
         }
 
         impl Deserializable for $ty {
-            fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+            fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
                 deserializer.deserialize($visitor_name)
             }
         }
@@ -112,7 +112,7 @@ macro_rules! implement_one_to_one {
         }
 
         impl Deserializable for $ty {
-            fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+            fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
                 deserializer.deserialize($visitor_name)
             }
         }

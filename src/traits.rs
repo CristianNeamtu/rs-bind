@@ -6,7 +6,7 @@ pub trait Deserializer: Sized {
 }
 
 pub trait Deserializable: Sized {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError>;
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError>;
 }
 
 #[allow(unused_variables)]

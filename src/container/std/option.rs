@@ -24,13 +24,13 @@ impl<T: Deserializable> Visitor for OptionVisitor<T> {
     }
 
     fn visit_some<D: Deserializer>(self, deserializer: D) -> Result<Self::Value, Self::Error> {
-        T::deserialize(deserializer)
+        T::unmarshal(deserializer)
             .map(|t| Some(t))
     }
 }
 
 impl<T: Deserializable> Deserializable for Option<T> {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         let visitor: OptionVisitor<T> = OptionVisitor::<T>::new();
         deserializer.deserialize(visitor)
     }

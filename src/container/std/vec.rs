@@ -30,7 +30,7 @@ impl<V: Deserializable> Visitor for VecVisitor<V> {
 }
 
 impl<V: Deserializable> Deserializable for Vec<V> {
-    fn deserialize<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
+    fn unmarshal<D: Deserializer>(deserializer: D) -> Result<Self, BindError> {
         deserializer.deserialize(VecVisitor::<V>::new())
     }
 }

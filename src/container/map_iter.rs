@@ -17,7 +17,7 @@ impl MapAccess for Map<String, Value> {
     fn get_keys<K: Deserializable>(&mut self) -> Vec<Result<K, BindError>> {
         self.keys().into_iter()
             // copy occurs
-            .map(|s| K::deserialize(s.clone()))
+            .map(|s| K::unmarshal(s.clone()))
             .collect()
     }
 
@@ -27,7 +27,7 @@ impl MapAccess for Map<String, Value> {
     fn get_value<V: Deserializable>(&mut self, key: &str) -> Result<Option<V>, BindError> {
         let deserializer: Option<&Value> = self.get(key);
         match deserializer {
-            Some(value) => V::deserialize(value)
+            Some(value) => V::unmarshal(value)
                 .map(Option::Some),
             None => Ok(None)
         }
@@ -39,7 +39,7 @@ impl MapAccess for &Map<String, Value> {
     fn get_keys<K: Deserializable>(&mut self) -> Vec<Result<K, BindError>> {
         self.keys().into_iter()
             // copy occurs
-            .map(|s| K::deserialize(s.clone()))
+            .map(|s| K::unmarshal(s.clone()))
             .collect()
     }
 
@@ -49,7 +49,7 @@ impl MapAccess for &Map<String, Value> {
     fn get_value<V: Deserializable>(&mut self, key: &str) -> Result<Option<V>, BindError> {
         let deserializer: Option<&Value> = self.get(key);
         match deserializer {
-            Some(value) => V::deserialize(value)
+            Some(value) => V::unmarshal(value)
                 .map(Option::Some),
             None => Ok(None)
         }
