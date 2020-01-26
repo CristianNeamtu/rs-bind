@@ -6,16 +6,11 @@ pub mod seq_iter;
 pub mod std;
 
 pub trait MapAccess: Sized {
-    fn next_entry<K, V>(&mut self) -> Result<Option<(K, V)>, BindError> where
-        K: Deserializable, V: Deserializable {
+    fn get_keys<K: Deserializable>(&mut self) -> Vec<Result<K, BindError>> {
         unimplemented!()
     }
 
-    fn next_key<K: Deserializable>(&mut self) -> Result<Option<K>, BindError> {
-        unimplemented!()
-    }
-
-    fn next_value<V: Deserializable>(&mut self) -> Result<Option<V>, BindError> {
+    fn get_value<V: Deserializable>(&mut self, _: &str) -> Result<Option<V>, BindError> {
         unimplemented!()
     }
 }

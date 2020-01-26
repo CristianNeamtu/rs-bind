@@ -61,5 +61,5 @@ fn should_deserialize_simple() {
     "#;
 
     let json = json::parse(JSON_BODY).unwrap();
-    let simple = Simple::deserialize(json).unwrap();
+    Simple::deserialize(json).unwrap();
 }

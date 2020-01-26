@@ -24,19 +24,11 @@ impl Visitor for MenuVisitor {
     type Error = BindError;
 
     fn visit_map<A: MapAccess>(self, mut map: A) -> Result<Self::Value, Self::Error> {
-        let mut restaurant: Option<String> = None;
-        let mut items: Option<Vec<MenuItem>> = None;
-        while let Some(field) = map.next_key::<String>()? {
-            match field.as_str() {
-                "restaurant" => restaurant = map.next_value()?,
-                "items" => items = map.next_value()?,
-                field => return Err(BindError::from_string(format!("Unrecognized field {}", field)))
-            };
-        }
-        Ok(Menu {
-            restaurant: restaurant.unwrap(),
-            items: items.unwrap(),
-        })
+        let menu: Menu = Menu {
+            restaurant: map.get_value("restaurant")?.unwrap(),
+            items: map.get_value("items")?.unwrap(),
+        };
+        Ok(menu)
     }
 }
 
@@ -56,25 +48,13 @@ impl Visitor for MenuItemVisitor {
     type Error = BindError;
 
     fn visit_map<A: MapAccess>(self, mut map: A) -> Result<Self::Value, Self::Error> {
-        let mut name: Option<String> = None;
-        let mut price: Option<f32> = None;
-        let mut vegetarian: Option<bool> = None;
-        let mut ingredients: Option<Box<[String]>> = None;
-        while let Some(field) = map.next_key::<String>()? {
-            match field.as_str() {
-                "name" => name = map.next_value()?,
-                "price" => price = map.next_value()?,
-                "vegetarian" => vegetarian = map.next_value()?,
-                "ingredients" => ingredients = map.next_value()?,
-                field => return Err(BindError::from_string(format!("Unrecognized field {}", field)))
-            };
-        }
-        Ok(MenuItem {
-            name: name.unwrap(),
-            price: price.unwrap(),
-            vegetarian: vegetarian.unwrap(),
-            ingredients: ingredients,
-        })
+        let menu_item = MenuItem {
+            name: map.get_value("name")?.unwrap(),
+            price: map.get_value("price")?.unwrap(),
+            vegetarian: map.get_value("vegetarian")?.unwrap(),
+            ingredients: map.get_value("ingredients")?,
+        };
+        Ok(menu_item)
     }
 }
 

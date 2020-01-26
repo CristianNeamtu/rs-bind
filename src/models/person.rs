@@ -22,11 +22,11 @@ impl Player {
 impl PartialEq for Player {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name &&
-        self.nickname == other.nickname &&
-        self.age == other.age &&
-        self.credits == other.credits &&
-        self.has_companion == other.has_companion &&
-        self.game_score == other.game_score
+            self.nickname == other.nickname &&
+            self.age == other.age &&
+            self.credits == other.credits &&
+            self.has_companion == other.has_companion &&
+            self.game_score == other.game_score
     }
 }
 
@@ -74,34 +74,15 @@ impl Visitor for PlayerVisitor {
     type Error = BindError;
 
     fn visit_map<A: MapAccess>(self, mut map: A) -> Result<Self::Value, Self::Error> {
-        let mut id: Option<u64> = None;
-        let mut name: Option<String> = None;
-        let mut nickname: Option<String> = None;
-        let mut age: Option<u8> = None;
-        let mut credits: Option<f32> = None;
-        let mut has_companion: Option<bool> = None;
-        let mut game_score: Option<i32> = None;
-
-        while let Some(key) = map.next_key::<PlayerFields>()? {
-            match key {
-                PlayerFields::Id => id = map.next_value()?,
-                PlayerFields::Name => name = map.next_value()?,
-                PlayerFields::Nickname => nickname = map.next_value()?,
-                PlayerFields::Age => age = map.next_value()?,
-                PlayerFields::Credits => credits = map.next_value()?,
-                PlayerFields::HasCompanion => has_companion = map.next_value()?,
-                PlayerFields::GameScore => game_score = map.next_value()?,
-            }
-        }
-        Ok(Player::new(
-            id.unwrap(),
-            name.unwrap(),
-            nickname,
-            age.unwrap(),
-            credits.unwrap(),
-            has_companion.unwrap(),
-            game_score.unwrap())
-        )
+        let player = Player::new(
+            map.get_value("id")?.unwrap(),
+            map.get_value("name")?.unwrap(),
+            map.get_value("nickname")?,
+            map.get_value("age")?.unwrap(),
+            map.get_value("credits")?.unwrap(),
+            map.get_value("has_companion")?.unwrap(),
+            map.get_value("game_score")?.unwrap());
+        Ok(player)
     }
 }
 

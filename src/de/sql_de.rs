@@ -3,7 +3,7 @@ use std::str;
 use rusqlite::Row;
 use rusqlite::types::{FromSql, FromSqlError, ValueRef};
 
-use container::map_iter::{Map, MapIter};
+use container::map_iter::Map;
 use traits::{Deserializer, Visitor};
 use types::{Numeric, Value};
 
@@ -34,7 +34,7 @@ impl<'de> Deserializer for &Row<'de> {
                         }
                     }
                 }
-                visitor.visit_map(MapIter::new(map))
+                visitor.visit_map(map)
             }
         }
     }

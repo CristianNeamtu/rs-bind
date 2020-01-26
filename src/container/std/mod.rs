@@ -1,3 +1,3 @@
-pub mod map;
+pub mod option;
 pub mod vec;
 pub mod slice;

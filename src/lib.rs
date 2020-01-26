@@ -6,7 +6,6 @@ extern crate serde;
 mod from_primitive;
 pub mod models;
 pub mod types;
-pub mod option;
 pub mod traits;
 pub mod error;
 pub mod container;

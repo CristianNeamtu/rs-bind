@@ -22,7 +22,7 @@ impl<V: Deserializable> Visitor for VecVisitor<V> {
 
     fn visit_seq<A: SeqAccess>(self, mut seq: A) -> Result<Self::Value, Self::Error> {
         let mut result = Vec::<V>::new();
-        while let Ok(Some(item)) = seq.next_element::<V>() {
+        while let Some(item) = seq.next_element::<V>()? {
             result.push(item)
         }
         Ok(result)

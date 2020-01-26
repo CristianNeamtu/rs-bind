@@ -1,5 +1,4 @@
-use container::map_iter::{Map, MapIter};
-use container::seq_iter::SeqIter;
+use container::map_iter::Map;
 use traits::{Deserializer, Visitor};
 
 impl Deserializer for String {
@@ -26,14 +25,26 @@ impl Deserializer for Value {
             Value::Bool(abool) => visitor.visit_bool(abool),
             Value::Number(number) => number.deserialize(visitor),
             Value::Char(character) => visitor.visit_char(character),
+            Value::String(string) => visitor.visit_string(string),
+            Value::Array(arr) => visitor.visit_seq(arr.into_iter()),
+            Value::Object(map) => visitor.visit_map(map),
+        }
+    }
+}
+
+impl Deserializer for &Value {
+    fn deserialize<V: Visitor>(self, visitor: V) -> Result<V::Value, V::Error> {
+        match self {
+            Value::Null => visitor.visit_unit(),
+            Value::Bool(abool) => visitor.visit_bool(*abool),
+            Value::Number(number) => number.deserialize(visitor),
+            Value::Char(character) => visitor.visit_char(*character),
             Value::String(string) => visitor.visit_string(string.to_owned()),
             Value::Array(arr) => {
-                let seq_iter = SeqIter::new(arr);
-                visitor.visit_seq(seq_iter)
+                visitor.visit_seq(arr.into_iter())
             }
             Value::Object(map) => {
-                let map_iter = MapIter::new(map);
-                visitor.visit_map(map_iter)
+                visitor.visit_map(map)
             }
         }
     }
@@ -70,6 +81,26 @@ impl Deserializer for Numeric {
             Numeric::USIZE(number) => visitor.visit_usize(number),
             Numeric::F32(number) => visitor.visit_f32(number),
             Numeric::F64(number) => visitor.visit_f64(number),
+        }
+    }
+}
+
+
+impl Deserializer for &Numeric {
+    fn deserialize<V: Visitor>(self, visitor: V) -> Result<V::Value, V::Error> {
+        match self {
+            Numeric::I8(number) => visitor.visit_i8(*number),
+            Numeric::I16(number) => visitor.visit_i16(*number),
+            Numeric::I32(number) => visitor.visit_i32(*number),
+            Numeric::I64(number) => visitor.visit_i64(*number),
+            Numeric::ISIZE(number) => visitor.visit_isize(*number),
+            Numeric::U8(number) => visitor.visit_u8(*number),
+            Numeric::U16(number) => visitor.visit_u16(*number),
+            Numeric::U32(number) => visitor.visit_u32(*number),
+            Numeric::U64(number) => visitor.visit_u64(*number),
+            Numeric::USIZE(number) => visitor.visit_usize(*number),
+            Numeric::F32(number) => visitor.visit_f32(*number),
+            Numeric::F64(number) => visitor.visit_f64(*number),
         }
     }
 }
